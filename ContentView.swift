@@ -21,7 +21,10 @@ struct ContentView: View {
             }
         }
         .padding()
-        Text("Feature")
+        .onAppear(perform: {
+            print(Bundle.main.infoDictionary?["API_KEY"] as? String)
+        })
+   
     }
 }
 
