@@ -13,6 +13,9 @@ struct ContentView: View {
     @State var query: String = ""
     var service = DataService()
     
+    // state property to capture selected businss and pass to bus detail view
+    @State var selectedBusiness: Business?
+    
     var body: some View {
         VStack {
             HStack {
@@ -31,6 +34,7 @@ struct ContentView: View {
             }
             List {ForEach (businesses){
                 b in
+                
                 VStack (spacing: 20){
                     HStack (spacing: 0){
                         Image("list-placeholder-image")
@@ -47,6 +51,12 @@ struct ContentView: View {
                         Image("regular_\(b.rating ?? 0)")
                     }
                     Divider()
+                }
+                .onTapGesture {
+                    selectedBusiness = b
+                }
+                .sheet(item: $selectedBusiness) { item in
+                    BusinessDetailView(business: item)
                 }
             }
             .listRowSeparator(.hidden)
