@@ -13,6 +13,7 @@ struct BusinessDetailView: View {
     
     var body: some View {
         Text(business?.name ?? "")
+        Text(business?.location?.address1 ?? "")
     }
 }
 
