@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BusinessDetailView: View {
     
-    var business: Business?
+    @Environment(BusinessModel.self) var model
     
     var body: some View {
         VStack (spacing: 0){
@@ -24,7 +24,7 @@ struct BusinessDetailView: View {
             }
             .frame(height: 164)
             
-            if let isClosed =  business?.is_closed  {
+            if let isClosed =  model.selectedBusiness?.is_closed  {
                 
                 ZStack (alignment: .leading){
                     Rectangle()
@@ -39,17 +39,17 @@ struct BusinessDetailView: View {
             
             ScrollView {
                 VStack (alignment: .leading, spacing: 0) {
-                    Text(business?.name ?? "")
+                    Text(model.selectedBusiness?.name ?? "")
                         .font(Font.system(size: 21))
                         .bold()
                         .padding(.bottom, 10)
                         .padding(.top, 16)
                     
-                    Text("\(business?.location?.address1 ?? ""), \(business?.location?.city ?? "")")
-                    Text("\(business?.location?.state ?? "") \(business?.location?.zip_code ?? ""), \(business?.location?.country ?? "")")
+                    Text("\(model.selectedBusiness?.location?.address1 ?? ""), \(model.selectedBusiness?.location?.city ?? "")")
+                    Text("\(model.selectedBusiness?.location?.state ?? "") \(model.selectedBusiness?.location?.zip_code ?? ""), \(model.selectedBusiness?.location?.country ?? "")")
                         .padding(.bottom, 10)
                     
-                    Image("regular_\(business?.rating ?? 0)")
+                    Image("regular_\(model.selectedBusiness?.rating ?? 0)")
                         .padding(.bottom, 16)
                     
                     Divider()
@@ -57,7 +57,7 @@ struct BusinessDetailView: View {
                     
                     HStack {
                         Image(systemName: "phone")
-                        Text(business?.phone ?? "")
+                        Text(model.selectedBusiness?.phone ?? "")
                         Spacer()
                         Image(systemName: "arrow.right")
                         
@@ -70,7 +70,7 @@ struct BusinessDetailView: View {
                     
                     HStack {
                         Image(systemName: "globe")
-                        Text(business?.url ?? "")
+                        Text(model.selectedBusiness?.url ?? "")
                             .lineLimit(1)
                         
                         Spacer()
@@ -85,7 +85,7 @@ struct BusinessDetailView: View {
                     
                     HStack {
                         Image(systemName: "bubble.left.and.bubble.right")
-                        Text("\(business?.review_count ?? 0) reviews")
+                        Text("\(model.selectedBusiness?.review_count ?? 0) reviews")
                         Spacer()
                         Image(systemName: "arrow.right")
                         
