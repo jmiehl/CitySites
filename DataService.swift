@@ -19,7 +19,7 @@ struct DataService {
         }
         
         //2 . create url
-            if let url = URL(string: "https://api.yelp.com/v3/businesses/search?latitude=39.2387&longitude=77.2794&categories=restaurants&limit=10") {
+            if let url = URL(string: "https://api.yelp.com/v3/businesses/search?latitude=38.8899&longitude=77.0091&categories=restaurants&limit=10") {
         
         //2. create request
                 var request = URLRequest(url: url)
@@ -28,7 +28,7 @@ struct DataService {
             
         //3. send request
                 do {
-                    let (data, response) = try await  URLSession.shared.data(for: request)
+                    let (data, _) = try await  URLSession.shared.data(for: request)
                     
                     //4 parse the json
                     let decoder = JSONDecoder()
