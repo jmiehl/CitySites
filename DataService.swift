@@ -19,7 +19,7 @@ struct DataService {
         }
         
         //2 . create url
-            if let url = URL(string: "https://api.yelp.com/v3/businesses/search?latitude=38.8899&longitude=77.0091&categories=restaurants&limit=10") {
+            if let url = URL(string: "https://api.yelp.com/v3/businesses/search?latitude=35.66551&longitude=139.7703981&categories=restaurants&limit=10") {
         
         //2. create request
                 var request = URLRequest(url: url)

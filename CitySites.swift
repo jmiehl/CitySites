@@ -8,11 +8,11 @@
 import SwiftUI
 
 @main
-struct CitySitesApp: App {
+struct CitySites: App {
     @State var model = BusinessModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
                 .environment(model)
         }
     }
