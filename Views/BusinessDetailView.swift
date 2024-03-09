@@ -51,6 +51,7 @@ struct BusinessDetailView: View {
                     
                    Image("regular_\(model.selectedBusiness?.rating ?? 0)")
                         .padding(.bottom, 16)
+                  
                     
                     Divider()
                        

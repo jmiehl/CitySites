@@ -11,7 +11,7 @@ struct Business: Decodable, Identifiable {
     var id: String?
     var alias: String?
     var categories: [Category]
-    var coodinates: Coordinate?
+    var coordinates: Coordinate?
     var display_phone: String?
     var distance: Double?
     var image_url: String?
