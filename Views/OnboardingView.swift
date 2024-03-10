@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    
+    @Environment(BusinessModel.self) var model
     @Environment(\.dismiss) var dismiss
     @State var selectedViewIndex = 0 // helps determine which screen you are on
     
@@ -34,6 +36,7 @@ struct OnboardingView: View {
                 
                 OnboardingViewDetails(bgColor: Color(red: 139/255, green: 166/255, blue: 65/255), headline: "Discover your city", subheadline: "We'll show you the best restaurants, venues, and more, based on your location") {
                     
+                    model.getUserLocation()
                     dismiss() // dismisses the onboarding view based on the environment method above
                 }
                 .tag(1)

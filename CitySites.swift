@@ -15,11 +15,12 @@ struct CitySites: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .environment(model)
+                .environment(model) // gives access to business model
                 .fullScreenCover(isPresented: $needsOnboarding) {
                     needsOnboarding = false // allows for dismissal of the onboarding screen
                 } content: {
                     OnboardingView()
+                        . environment(model) // gives access to business model
                 }
 
         }
