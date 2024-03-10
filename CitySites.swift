@@ -20,7 +20,13 @@ struct CitySites: App {
                     needsOnboarding = false // allows for dismissal of the onboarding screen
                 } content: {
                     OnboardingView()
-                        . environment(model) // gives access to business model
+                        .environment(model) // gives access to business model
+                }
+                .onAppear {
+                    // if no onboarding needed get location
+                    if needsOnboarding == false {
+                        model.getUserLocation()
+                    }
                 }
 
         }
