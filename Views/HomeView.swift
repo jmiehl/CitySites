@@ -11,51 +11,122 @@ struct HomeView: View {
     
     @Environment(BusinessModel.self) var model
     @State var selectedTab = 0
-    
+    @State var query = ""
+    @FocusState var queryBoxFocused:Bool
+    @State var showOptions = false
+    @State var popularOn = false
+    @State var dealsOn = false
+    @State var categorySelection = "restaurants"
+   
     var body: some View {
         
+        
         @Bindable var model = model
+        
         VStack {
             HStack {
-                TextField("What're you looking for", text: $model.query)
+                TextField("What're you looking for", text: $query)
                     .textFieldStyle(.roundedBorder)
+                    .focused($queryBoxFocused)
+                    .onTapGesture {
+                        withAnimation{
+                            showOptions = true
+                        }
+                    }
                 Button {
-                    //TODO: implement query
+                    withAnimation {
+                        showOptions = false
+                        queryBoxFocused = false
+                    }
+                    //Perform a search
+                    model.getBusinesses(query: query,
+                                        options: getOptionsString(),
+                                        category: categorySelection)
+                    queryBoxFocused = false
                 } label: {
                     Text("Go")
                         .padding(.horizontal)
-                        .padding(.vertical, 10)
+                        .frame(height: 32)
                         .background(.blue)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .cornerRadius(6)
                 }
             }
-            // show picker
-            Picker("", selection: $selectedTab) {
-                Text("List")
-                    .tag(0)
-                Text("Map")
-                    .tag(1)
+            .padding(.horizontal)
+            
+            //Query options. Show if textbox is focused
+            
+            if showOptions {
+                
+                VStack {
+                    
+                    Toggle("Popular", isOn: $popularOn)
+                    Toggle("Deals", isOn: $dealsOn)
+                    HStack{
+                        Text("Category")
+                        Spacer()
+                        Picker("Category", selection:$categorySelection) {
+                            Text("Restaurants")
+                                .tag("restaurants")
+                            Text("Arts")
+                                .tag("arts")
+                        }
+                    }
+                }
+                .padding(.horizontal, 50)
+                
+                // show picker
+                Picker("", selection: $selectedTab) {
+                    Text("List")
+                        .tag(0)
+                    Text("Map")
+                        .tag(1)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal, 40)
+                .transition(.push(from: .top))
             }
-            .pickerStyle(SegmentedPickerStyle())
             
             // show map or list
             
             if selectedTab == 1 {
                 MapView()
+                    .onTapGesture {
+                        withAnimation {
+                            showOptions = false
+                            queryBoxFocused = false
+                        }
+                    }
             }
             else {
                 ListView()
+                    .onTapGesture {
+                        withAnimation {
+                            showOptions = false
+                            queryBoxFocused = false
+                        }
+                        
+                    }
+                    .onAppear {
+                        model.getBusinesses(query: nil, options: nil, category: nil)
+                    }
+                    .sheet(item: $model.selectedBusiness) { item in
+                        BusinessDetailView()
+                    }
             }
-           
         }
-        .onAppear {
-            model.getBusinesses()
-        }
-        .sheet(item: $model.selectedBusiness) { item in
-            BusinessDetailView()
-        }
+    }
+    
+    func getOptionsString() -> String {
+        var optionsArray = [String]()
         
+        if popularOn {
+            optionsArray.append("hot_and_new")
+        }
+        if dealsOn {
+            optionsArray.append("deals")
+        }
+        return optionsArray.joined(separator: ",")
     }
 }
 
