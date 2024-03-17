@@ -74,7 +74,7 @@ struct HomeView: View {
                     }
                 }
                 .padding(.horizontal, 50)
-                
+            }
                 // show picker
                 Picker("", selection: $selectedTab) {
                     Text("List")
@@ -85,11 +85,23 @@ struct HomeView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal, 40)
                 .transition(.push(from: .top))
-            }
+            
             
             // show map or list
-            
-            if selectedTab == 1 {
+            if model.locationAuthStatus == .denied {
+                Spacer()
+                Text("Please all location services for this app to see sights near you.")
+                    .padding(.horizontal)
+                Button {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                    
+                } label: {
+                    Text("Open App Privacy Settings")
+                }
+                Spacer()
+            } else if selectedTab == 1 {
                 MapView()
                     .onTapGesture {
                         withAnimation {
@@ -106,9 +118,6 @@ struct HomeView: View {
                             queryBoxFocused = false
                         }
                         
-                    }
-                    .onAppear {
-                        model.getBusinesses(query: nil, options: nil, category: nil)
                     }
                     .sheet(item: $model.selectedBusiness) { item in
                         BusinessDetailView()

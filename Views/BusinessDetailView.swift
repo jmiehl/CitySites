@@ -77,7 +77,16 @@ struct BusinessDetailView: View {
                     
                     HStack {
                         Image(systemName: "phone")
-                        Text(model.selectedBusiness?.phone ?? "")
+                                             
+                        if let url = URL(string: "tel:\(model.selectedBusiness?.phone ?? "")") {
+                            Link(destination: url) {
+                                Text(model.selectedBusiness?.phone ?? "")
+                            }
+                        }
+                        else {
+                            Text(model.selectedBusiness?.phone ?? "")
+                        }
+                        
                         Spacer()
                         Image(systemName: "arrow.right")
                         
@@ -90,9 +99,17 @@ struct BusinessDetailView: View {
                     
                     HStack {
                         Image(systemName: "globe")
-                        Text(model.selectedBusiness?.url ?? "")
-                            .lineLimit(1)
                         
+                        if let url = URL(string:"\(model.selectedBusiness?.url ?? "")") {
+                            Link(destination: url) {
+                                Text(model.selectedBusiness?.url ?? "")
+                                    .lineLimit(1)
+                            }
+                        }
+                        else {
+                            Text(model.selectedBusiness?.url ?? "")
+                                .lineLimit(1)
+                        }
                         Spacer()
                         Image(systemName: "arrow.right")
                         
@@ -106,8 +123,7 @@ struct BusinessDetailView: View {
                     HStack {
                         Image(systemName: "bubble.left.and.bubble.right")
                         Text("\(model.selectedBusiness?.review_count ?? 0) reviews")
-                        Spacer()
-                        Image(systemName: "arrow.right")
+                   
                         
                     }
                     .padding(.vertical, 12)
